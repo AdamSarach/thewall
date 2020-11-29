@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .utilities import get_proper_url
+from .utilities import *
 import requests
 
 # Create your tests here.
@@ -19,4 +19,13 @@ class URLTestCase(TestCase):
         invalid_output = get_proper_url(another_name)
         self.assertEqual(type(invalid_output), dict)
 
+
+class BankierTestCase(TestCase):
+
+    def test_fetch_data(self):
+        """method scrap webpage every time tests are run"""
+        bankier = SoupObject(WebsiteBankier)
+        data = bankier.get_data()
+        value = all("url" in list_element.keys() for list_element in data)
+        self.assertEqual(value, True)
 
