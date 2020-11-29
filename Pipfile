@@ -8,7 +8,6 @@ verify_ssl = true
 [packages]
 django = "*"
 beautifulsoup4 = "*"
-django-decouple = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.6"
