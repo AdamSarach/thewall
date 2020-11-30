@@ -84,4 +84,38 @@ class WebsiteWNP(Website):
         return get_proper_url("wnp")
 
     def retrieve_data(self, text):
-        return
+        wnp_list = []
+        soup = BeautifulSoup(text, 'html.parser')
+        tabs = soup.find("div", {"class": "tabs"})
+        news = tabs.find("div", {"class": "one active"})
+        for link in news.find_all('a'):
+            url = link['href']
+            description = link.find("h3").text
+            list_element = {
+                "url": url,
+                "description": description
+            }
+            wnp_list.append(list_element)
+        return wnp_list
+
+
+class WebsiteMoney(Website):
+    def retrieve_url(self):
+        return get_proper_url("money")
+
+    def retrieve_data(self, text):
+        money_list = []
+        money_domain = "https://www.money.pl/"
+        soup = BeautifulSoup(text, 'html.parser')
+        ul_element = soup.find("ul", {"class": "w4z002-3 bzICKL"})
+        for link in ul_element.find_all('li'):
+            inner_link = link.find("a")
+            description = inner_link['title']
+            path = inner_link['href']
+            url = money_domain + path
+            list_element = {
+                "url": url,
+                "description": description
+            }
+            money_list.append(list_element)
+        return money_list
