@@ -47,3 +47,19 @@ class MoneyTestCase(TestCase):
         data = money.get_data()
         value = all("url" in list_element.keys() for list_element in data)
         self.assertEqual(value, True)
+
+
+class DataBaseTestCase(TestCase):
+
+    def test_save_data_to_db(self):
+        bankier = SoupObject(WebsiteBankier)
+        name = 'bankier'
+        input_data = [{
+            'url': 'url1',
+            'description': 'description1'
+        }, {
+            'url': 'url2',
+            'description': 'description2'
+        }]
+        response = bankier.save_data_to_db(input_data, name)
+        self.assertEqual(response['info'], 'Data saved')
