@@ -1,6 +1,7 @@
 import requests
 from abc import ABC, abstractmethod
 from bs4 import BeautifulSoup
+from backend.models import FetchedData
 
 
 def get_proper_url(name):
@@ -42,6 +43,17 @@ class SoupObject:
     def get_data(self):
         return self._websiteStrategy.retrieve_data(self, self.get_page_text())
 
+    def get_name(self):
+        return self._websiteStrategy.get_name()
+
+    def save_data_to_db(self, fetched_response, name):
+        try:
+            new_entry = FetchedData(data_name=name, data_content=fetched_response)
+            new_entry.save()
+        except:
+            return {'info': 'Data not saved'}
+        return {'info': 'Data saved'}
+
 
 class Website(ABC):
 
@@ -55,8 +67,14 @@ class Website(ABC):
 
 
 class WebsiteBankier(Website):
+
+    name = "bankier"
+
     def retrieve_url(self):
         return get_proper_url("bankier")
+
+    def get_name(self):
+        return self.name
 
     def retrieve_data(self, text):
         bankier_list = []
@@ -80,8 +98,13 @@ class WebsiteBankier(Website):
 
 
 class WebsiteWNP(Website):
+    name = "wnp"
+
     def retrieve_url(self):
         return get_proper_url("wnp")
+
+    def get_name(self):
+        return self.name
 
     def retrieve_data(self, text):
         wnp_list = []
@@ -100,8 +123,13 @@ class WebsiteWNP(Website):
 
 
 class WebsiteMoney(Website):
+    name = "money"
+
     def retrieve_url(self):
         return get_proper_url("money")
+
+    def get_name(self):
+        return self.name
 
     def retrieve_data(self, text):
         money_list = []
