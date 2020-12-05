@@ -18,6 +18,24 @@ def get_proper_url(name):
         return {'info': 'website name "%s" not in base' % name.lower()}
 
 
+def get_page_text(url):
+    response = requests.get(url)
+    response.encoding = "utf-8"
+    status = response.status_code
+    if status != requests.codes.ok:
+        return {'info': "Status code is: %d" % status}
+    return response.text
+
+
+def save_data_to_db(fetched_response, name):
+    try:
+        new_entry = FetchedData(data_name=name, data_content=fetched_response)
+        new_entry.save()
+    except:
+        return {'info': 'Data not saved'}
+    return {'info': 'Data saved'}
+
+
 class SoupObject:
 
     def __init__(self, website):
@@ -31,28 +49,14 @@ class SoupObject:
     def website(self, website):
         self._websiteStrategy = website
 
-    def get_page_text(self):
-        url = self._websiteStrategy.retrieve_url(self)
-        response = requests.get(url)
-        response.encoding = "utf-8"
-        status = response.status_code
-        if status != requests.codes.ok:
-            return {'info': "Status code is: %d" % status}
-        return response.text
+    def get_url(self):
+        return self._websiteStrategy.retrieve_url(self)
 
-    def get_data(self):
-        return self._websiteStrategy.retrieve_data(self, self.get_page_text())
+    def get_data_from_page_text(self, text):
+        return self._websiteStrategy.retrieve_data(self, text)
 
     def get_name(self):
-        return self._websiteStrategy.get_name()
-
-    def save_data_to_db(self, fetched_response, name):
-        try:
-            new_entry = FetchedData(data_name=name, data_content=fetched_response)
-            new_entry.save()
-        except:
-            return {'info': 'Data not saved'}
-        return {'info': 'Data saved'}
+        return self._websiteStrategy.retrieve_name(self)
 
 
 class Website(ABC):
@@ -68,13 +72,11 @@ class Website(ABC):
 
 class WebsiteBankier(Website):
 
-    name = "bankier"
-
     def retrieve_url(self):
         return get_proper_url("bankier")
 
-    def get_name(self):
-        return self.name
+    def retrieve_name(self):
+        return "bankier"
 
     def retrieve_data(self, text):
         bankier_list = []
@@ -98,13 +100,13 @@ class WebsiteBankier(Website):
 
 
 class WebsiteWNP(Website):
-    name = "wnp"
+
 
     def retrieve_url(self):
         return get_proper_url("wnp")
 
-    def get_name(self):
-        return self.name
+    def retrieve_name(self):
+        return "wnp"
 
     def retrieve_data(self, text):
         wnp_list = []
@@ -123,13 +125,13 @@ class WebsiteWNP(Website):
 
 
 class WebsiteMoney(Website):
-    name = "money"
+
 
     def retrieve_url(self):
         return get_proper_url("money")
 
-    def get_name(self):
-        return self.name
+    def retrieve_name(self):
+        return "money"
 
     def retrieve_data(self, text):
         money_list = []
