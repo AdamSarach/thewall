@@ -10,6 +10,7 @@ django = "*"
 beautifulsoup4 = "*"
 django-decouple = "*"
 requests = "*"
+djangorestframework = "*"
 
 [requires]
 python_version = "3.8"
