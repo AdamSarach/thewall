@@ -80,14 +80,15 @@ class WebsiteBankier(Website):
 
     def retrieve_data(self, text):
         bankier_list = []
+        bankier_domain = "https://www.bankier.pl"
         soup = BeautifulSoup(text, 'html.parser')
         section = soup.find("div", {"class": "o-home-dailynews-box__list"})
         for link in section.find_all('a', {"class": "m-title-with-label-item"}):
             class_list = link.get_attribute_list('class')
             if len(class_list) > 1:
                 continue
-
-            url = link['data-vr-contentbox-url']
+            path = link['href']
+            url = bankier_domain + path
             image = link.find("img")
             description = image["alt"]
             list_element = {
@@ -135,7 +136,7 @@ class WebsiteMoney(Website):
 
     def retrieve_data(self, text):
         money_list = []
-        money_domain = "https://www.money.pl/"
+        money_domain = "https://www.money.pl"
         soup = BeautifulSoup(text, 'html.parser')
         ul_element = soup.find("ul", {"class": "w4z002-3 bzICKL"})
         for link in ul_element.find_all('li'):
