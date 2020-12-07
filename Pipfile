@@ -11,6 +11,7 @@ beautifulsoup4 = "*"
 django-decouple = "*"
 requests = "*"
 djangorestframework = "*"
+celery = "*"
 
 [requires]
 python_version = "3.8"
