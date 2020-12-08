@@ -29,23 +29,16 @@ def check():
 
 
 app.conf.beat_schedule = {
-    "check-bankier-data-every-180s": {
+    "check-bankier-data-every-2h": {
         "task": "backend.tasks.fetch_bankier_data",
-        "schedule": 180.0
+        "schedule": 7200.0
+    },
+    "check-wnp-data-every-2h": {
+        "task": "backend.tasks.fetch_wnp_data",
+        "schedule": 7200.0
+    },
+    "check-money-data-every-2h": {
+        "task": "backend.tasks.fetch_money_data",
+        "schedule": 7200.0
     }
 }
-
-
-@app.on_after_configure.connect
-def setup_periodic_tasks(sender, **kwargs):
-    # Calls test('hello') every 180 seconds.
-    sender.add_periodic_task(180.0, fetch_bankier_data.s(), name='check every 180s')
-
-    # # Calls test('world') every 30 seconds
-    # sender.add_periodic_task(30.0, test.s('world'), expires=10)
-    #
-    # # Executes every Monday morning at 7:30 a.m.
-    # sender.add_periodic_task(
-    #     crontab(hour=7, minute=30, day_of_week=1),
-    #     test.s('Happy Mondays!'),
-    # )

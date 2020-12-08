@@ -3,12 +3,24 @@ from celery import shared_task
 from celery.schedules import crontab
 from celery.decorators import periodic_task
 
-from .utilities import get_proper_url, get_page_text, SoupObject, WebsiteBankier, WebsiteWNP, WebsiteMoney, Website, save_data_to_db
+from .utilities import get_proper_url, get_page_text, SoupObject, WebsiteBankier, WebsiteWNP, WebsiteMoney, Website, \
+    save_data_to_db
 
 
 @shared_task
 def fetch_bankier_data():
     script_data(WebsiteBankier)
+
+
+@shared_task
+def fetch_wnp_data():
+    script_data(WebsiteWNP)
+
+
+@shared_task
+def fetch_money_data():
+    script_data(WebsiteMoney)
+
 
 def script_data(strategy):
     obj = SoupObject(strategy)
