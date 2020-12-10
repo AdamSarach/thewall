@@ -1,0 +1,18 @@
+.info-box {
+    background-color: #ccccb3;
+    border: 0px solid linen;
+    border-radius: 10px;
+    font-weight: bold;
+    margin: 5px;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+h1 {
+    color: #1f1f14;
+}
+
+.container {
+    background-color: #e1e1d0;
+    padding-bottom: 50px;
+}
