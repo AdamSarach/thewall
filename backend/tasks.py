@@ -1,9 +1,6 @@
 from celery import shared_task
 
-from celery.schedules import crontab
-from celery.decorators import periodic_task
-
-from .utilities import get_proper_url, get_page_text, SoupObject, WebsiteBankier, WebsiteWNP, WebsiteMoney, Website, \
+from backend.utilities import get_page_text, SoupObject, WebsiteBankier, WebsiteWNP, WebsiteMoney, \
     save_data_to_db
 
 

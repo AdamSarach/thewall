@@ -2,14 +2,16 @@ import requests
 from abc import ABC, abstractmethod
 from bs4 import BeautifulSoup
 from backend.models import FetchedData
+from decouple import config
 
 
 def get_proper_url(name):
     urls = {
-        "bankier": "http://bankier.pl",
-        "wnp": "http://wnp.pl",
-        "money": "http://money.pl"
+        "bankier": config('BANKIER_URL'),
+        "wnp": config('WNP_URL'),
+        "money": config('MONEY_URL')
     }
+
     resolved_name = name.lower()
     try:
         return urls[resolved_name]
@@ -80,7 +82,7 @@ class WebsiteBankier(Website):
 
     def retrieve_data(self, text):
         bankier_list = []
-        bankier_domain = "https://www.bankier.pl"
+        bankier_domain = config('BANKIER_URL')
         soup = BeautifulSoup(text, 'html.parser')
         section = soup.find("div", {"class": "o-home-dailynews-box__list"})
         for link in section.find_all('a', {"class": "m-title-with-label-item"}):
@@ -136,7 +138,7 @@ class WebsiteMoney(Website):
 
     def retrieve_data(self, text):
         money_list = []
-        money_domain = "https://www.money.pl"
+        money_domain = config('MONEY_URL')
         soup = BeautifulSoup(text, 'html.parser')
         ul_element = soup.find("ul", {"class": "w4z002-3 bzICKL"})
         for link in ul_element.find_all('li'):
