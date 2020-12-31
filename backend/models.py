@@ -1,9 +1,6 @@
 from django.db import models
 
 
-# Create your models here.
-
-
 class FetchedData(models.Model):
     SITES = (
         ('wnp', 'wnp'),
